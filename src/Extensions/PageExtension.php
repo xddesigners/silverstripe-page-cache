@@ -18,6 +18,14 @@ class PageExtension extends Extension
         'CacheLifetime' => 0,
     ];
 
+    public function updateCMSFields(FieldList $fields)
+    {
+        // EnablePageCache/CacheLifetime are $db fields, so they auto-scaffold into the content form
+        // (Root.Main). They belong only in the Settings tab (see updateSettingsFields()), so remove the
+        // scaffolded copies here.
+        $fields->removeByName(['EnablePageCache', 'CacheLifetime']);
+    }
+
     public function updateSettingsFields(FieldList $fields)
     {
         $fields->addFieldToTab('Root.Settings', CheckboxField::create('EnablePageCache', 'Enable Page Cache'));
