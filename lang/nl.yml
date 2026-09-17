@@ -1,0 +1,4 @@
+nl:
+  XD\PageCache\Extensions\PageExtension:
+    EnablePageCache: 'Paginacache inschakelen'
+    CacheLifetime: 'Cache-levensduur (seconden)'

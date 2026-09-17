@@ -28,8 +28,14 @@ class PageExtension extends Extension
 
     public function updateSettingsFields(FieldList $fields)
     {
-        $fields->addFieldToTab('Root.Settings', CheckboxField::create('EnablePageCache', 'Enable Page Cache'));
-        $fields->addFieldToTab('Root.Settings', NumericField::create('CacheLifetime', 'Cache Lifetime (seconds)'));
+        $fields->addFieldToTab('Root.Settings', CheckboxField::create(
+            'EnablePageCache',
+            _t(self::class . '.EnablePageCache', 'Enable Page Cache')
+        ));
+        $fields->addFieldToTab('Root.Settings', NumericField::create(
+            'CacheLifetime',
+            _t(self::class . '.CacheLifetime', 'Cache Lifetime (seconds)')
+        ));
     }
 
 
