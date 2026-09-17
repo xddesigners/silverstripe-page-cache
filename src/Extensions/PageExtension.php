@@ -35,6 +35,11 @@ class PageExtension extends Extension
         $fields->addFieldToTab('Root.Settings', NumericField::create(
             'CacheLifetime',
             _t(self::class . '.CacheLifetime', 'Cache Lifetime (seconds)')
+        )->setDescription(
+            _t(
+                self::class . '.CacheLifetimeDescription',
+                '0 = use the default cache lifetime (900 seconds). Enter a number of seconds to override it for this page.'
+            )
         ));
     }
 
