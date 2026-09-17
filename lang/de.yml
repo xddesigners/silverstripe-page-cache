@@ -2,4 +2,4 @@ de:
   XD\PageCache\Extensions\PageExtension:
     EnablePageCache: 'Seiten-Cache aktivieren'
     CacheLifetime: 'Cache-Lebensdauer (Sekunden)'
-    CacheLifetimeDescription: '0 = Standard-Cache-Lebensdauer verwenden (900 Sekunden). Geben Sie Sekunden ein, um sie für diese Seite zu überschreiben.'
+    CacheLifetimeDescription: '0 = die Standard-Cache-Lebensdauer der Website verwenden. Geben Sie eine Anzahl Sekunden ein, um für diese Seite eine eigene Lebensdauer festzulegen.'

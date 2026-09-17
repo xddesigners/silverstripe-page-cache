@@ -2,4 +2,4 @@ en:
   XD\PageCache\Extensions\PageExtension:
     EnablePageCache: 'Enable Page Cache'
     CacheLifetime: 'Cache Lifetime (seconds)'
-    CacheLifetimeDescription: '0 = use the default cache lifetime (900 seconds). Enter a number of seconds to override it for this page.'
+    CacheLifetimeDescription: '0 = use the site default cache lifetime. Enter a number of seconds to set a specific lifetime for this page.'

@@ -90,13 +90,36 @@ combination is a separate entry), the page's `LastEdited`, and — when the cont
 
 ## Flushing
 
-- `?flush=1` (or `dev/build?flush=all`) clears the entire page-cache pool.
-- `?clearcache=1` on a page clears just that page's current cache entry.
-- Publishing a page invalidates its entries automatically (via `LastEdited` in the key).
+- **The edited page** refreshes automatically on publish — its `LastEdited` is part of the cache key.
+- **Menu changes flush the whole pool.** When a publish/unpublish changes a menu field (`Title`, `MenuTitle`,
+  `URLSegment`, `ShowInMenus`, `ParentID`, `Sort`) or adds/removes a page, every cached page is cleared,
+  because the menu is embedded in all of them. Plain content edits do **not** flush the pool
+  (`flush_all_on_menu_change`, default on).
+- **Cross-page listings** that show *other* pages (e.g. a category listing its products) refresh within the
+  configured cache lifetime — they are not tied to the edited page.
+- Manual: `?flush=1` (or `dev/build?flush=all`) clears the whole pool; `?clearcache=1` on a page clears just
+  that page's current entry.
+
+## Small vs. large sites
+
+- **Small sites:** set a long (or unlimited) lifetime and enable `flush_all_on_publish` — pages then cache
+  effectively forever and the whole pool is refreshed the moment you publish, so low traffic never means a
+  cold cache.
+- **Large catalogues (thousands of pages, frequent imports):** leave `flush_all_on_publish` **off**. Clearing
+  everything on each publish would rebuild the whole site and thrash under imports. Rely on: per-page
+  `LastEdited` freshness, the default menu-aware flush (structure changes only), and a moderate cache
+  lifetime for listings. A finite lifetime also garbage-collects the orphaned entries left behind when pages
+  are re-published often. Consider a Redis/APCu pool instead of the filesystem, and be mindful that keying on
+  the full URL means query strings (`?utm_…`, pagination, filters) each create their own entry.
 
 ## Configuration reference
 
 ```yaml
+# Flush strategy (see "Flushing"). Per-page freshness is automatic; these govern the OTHER cached pages.
+XD\PageCache\Extensions\PageExtension:
+  flush_all_on_menu_change: true   # clear the pool when a publish changes the menu (default)
+  flush_all_on_publish: false      # clear the pool on EVERY publish — small sites only
+
 # Serve cached pages to logged-in non-staff users (default: false)
 SilverStripe\CMS\Controllers\ContentController:
   cache_for_members: true
