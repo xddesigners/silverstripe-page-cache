@@ -1,0 +1,26 @@
+{
+  "name": "xddesigners/silverstripe-page-cache",
+  "description": "Opt-in full-page cache for Silverstripe CMS: caches a page's rendered HTML per URL, invalidated on publish, safe for anonymous (and optionally logged-in) visitors when per-session content is hydrated client-side.",
+  "type": "silverstripe-vendormodule",
+  "keywords": ["silverstripe", "cms", "cache", "page-cache", "performance", "fullpage"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    { "name": "XD designers", "homepage": "https://www.xd.nl/" }
+  ],
+  "require": {
+    "php": "^8.1",
+    "silverstripe/framework": "^5 || ^6",
+    "silverstripe/cms": "^5 || ^6",
+    "silverstripe/versioned": "^2 || ^3"
+  },
+  "autoload": {
+    "psr-4": {
+      "XD\\PageCache\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+---
+Name: page-caching
+---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - XD\PageCache\Extensions\PageExtension
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - XD\PageCache\Extensions\PageControllerExtension
+
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.pageCache:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: "pageCache"
+      defaultLifetime: 900
+  SilverStripe\Dev\DebugView:
+    class: XD\PageCache\Injector\PageCacheDebugView
