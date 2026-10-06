@@ -12,6 +12,7 @@ use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
 use SilverStripe\Versioned\Caching\VersionedCacheAdapter;
 use SilverStripe\Versioned\Versioned;
+use TractorCow\Fluent\State\FluentState;
 
 /**
  * Full-page cache for a page controller.
@@ -81,6 +82,21 @@ class PageControllerExtension extends Extension
         ]);
     }
 
+    /**
+     * Locale-variant portion of the cache key. Fluent can resolve the same URL to different locales
+     * (e.g. the unprefixed default locale under disable_default_prefix, or any detection/fallback edge),
+     * so the active locale must be part of the key — otherwise one locale's rendered HTML (including its
+     * language switcher) can be served for another. Returns an empty string when Fluent is not installed,
+     * so single-language sites are unaffected.
+     */
+    protected function cacheLocaleVariant(): string
+    {
+        if (!class_exists(FluentState::class)) {
+            return '';
+        }
+        return (string)FluentState::singleton()->getLocale();
+    }
+
     public function onAfterInit()
     {
         $request = $this->owner->getRequest();
@@ -105,9 +121,11 @@ class PageControllerExtension extends Extension
         $cacheLifetime = (int)$this->owner->data()->CacheLifetime;
 
         // Key on the FULL url incl. GET vars (pagination/sort/filter each need their own entry),
+        // the active Fluent locale (so a multilingual site never serves one locale's HTML for another),
         // the page's LastEdited (auto-invalidate on publish) and the device variant.
         $cacheKey = md5(implode('-', [
             $request->getURL(true),
+            $this->cacheLocaleVariant(),
             $this->owner->LastEdited,
             $this->cacheDeviceVariant(),
         ]));
